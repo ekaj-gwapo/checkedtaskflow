@@ -12,11 +12,13 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 interface EmployeeSidebarProps {
   selectedEmployeeId: string | null
   onSelectEmployee: (employeeId: string | null) => void
+  onTabChange?: (tab: string) => void
 }
 
 export function EmployeeSidebar({
   selectedEmployeeId,
   onSelectEmployee,
+  onTabChange,
 }: EmployeeSidebarProps) {
   const { allEmployees, tasks } = useTaskContext()
   const [activeTab, setActiveTab] = useState("dashboard")
@@ -66,7 +68,10 @@ export function EmployeeSidebar({
       </div>
 
       {/* Tabs Navigation */}
-      <Tabs value={activeTab} onValueChange={setActiveTab} className="flex-1 flex flex-col">
+      <Tabs value={activeTab} onValueChange={(tab) => {
+        setActiveTab(tab)
+        onTabChange?.(tab)
+      }} className="flex-1 flex flex-col">
         <TabsList className="grid w-full grid-cols-2 rounded-none border-b border-border">
           <TabsTrigger value="dashboard" className="gap-2 rounded-none data-[state=active]:border-b-2 data-[state=active]:border-primary">
             <BarChart3 className="h-4 w-4" />
