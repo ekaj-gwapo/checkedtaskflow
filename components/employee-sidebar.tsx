@@ -1,11 +1,9 @@
 "use client"
 
-import Link from "next/link"
 import { useTaskContext } from "@/lib/task-context"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import { Users, ChevronRight, ImageOff, BarChart3 } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import { Users, ChevronRight, ImageOff } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 interface EmployeeSidebarProps {
@@ -66,19 +64,7 @@ export function EmployeeSidebar({
       {/* Content - Scrollable */}
       <ScrollArea className="flex-1">
         <div className="flex flex-col">
-          {/* Dashboard Button */}
-          <div className="p-4 border-b border-border">
-            <Link href="/team-dashboard" className="w-full">
-              <Button
-                className="w-full bg-primary text-primary-foreground hover:bg-primary/90 gap-2"
-              >
-                <BarChart3 className="h-4 w-4" />
-                Dashboard
-              </Button>
-            </Link>
-          </div>
-
-          {/* Employees Section - Below Dashboard */}
+          {/* Employees Section */}
           <div className="p-4">
             <div className="flex items-center gap-2 mb-3">
               <Users className="h-4 w-4 text-primary" />
