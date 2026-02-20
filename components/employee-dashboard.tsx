@@ -132,7 +132,6 @@ export function EmployeeDashboard() {
   const [selectedTask, setSelectedTask] = useState<Task | null>(null)
   const [filterStatus, setFilterStatus] = useState<string>("all")
   const [selectedEmployeeId, setSelectedEmployeeId] = useState<string | null>(null)
-  const [sidebarActiveTab, setSidebarActiveTab] = useState("employees")
 
   const myTasks = useMemo(() => {
     return tasks.filter((t) => t.assigneeId === currentUser?.id)
@@ -159,24 +158,15 @@ export function EmployeeDashboard() {
 
   return (
     <div className="flex flex-1 min-h-0">
-      {/* Sidebar with Employee Stats */}
+      {/* Sidebar with Dashboard and Employee List */}
       <div className="hidden lg:block">
         <EmployeeSidebar
           selectedEmployeeId={selectedEmployeeId}
           onSelectEmployee={setSelectedEmployeeId}
-          onTabChange={setSidebarActiveTab}
         />
       </div>
 
       <div className="flex-1 flex flex-col min-w-0">
-        {sidebarActiveTab === "dashboard" ? (
-          <div className="flex-1 flex items-center justify-center p-6">
-            <div className="w-full max-w-4xl">
-              <h2 className="text-2xl font-bold text-foreground mb-6">Team Performance Dashboard</h2>
-              <TopCompletersChart />
-            </div>
-          </div>
-        ) : (
         <div className="p-4 lg:p-6 flex flex-col gap-6">
           {/* Stats */}
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
@@ -240,11 +230,10 @@ export function EmployeeDashboard() {
             </TabsContent>
           </Tabs>
         </div>
-        )}
       </div>
 
-      {/* Detail Panel - Only show when not on dashboard tab */}
-      {selectedTask && sidebarActiveTab !== "dashboard" && (
+      {/* Detail Panel */}
+      {selectedTask && (
         <div className="hidden lg:block w-[380px] shrink-0 border-l border-border overflow-y-auto">
           <TaskDetailPanel
             task={tasks.find((t) => t.id === selectedTask.id) || selectedTask}
