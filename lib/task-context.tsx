@@ -89,9 +89,9 @@ export function TaskProvider({ children }: { children: ReactNode }) {
 
   const updateTaskStatus = useCallback(
     (taskId: string, status: TaskStatus) => {
-      // Only admin can update task status
-      if (currentRole !== "admin") {
-        console.warn("[v0] Only admin can update task status")
+      // Only employees can update task status
+      if (currentRole !== "employee") {
+        console.warn("[v0] Only employees can update task status")
         return
       }
 
@@ -181,6 +181,12 @@ export function TaskProvider({ children }: { children: ReactNode }) {
   )
 
   const deleteActionStep = useCallback((taskId: string, stepId: string) => {
+    // Only admin can delete action steps
+    if (currentRole !== "admin") {
+      console.warn("[v0] Only admin can delete action steps")
+      return
+    }
+
     setTasks((prev) =>
       prev.map((t) =>
         t.id === taskId
@@ -191,7 +197,7 @@ export function TaskProvider({ children }: { children: ReactNode }) {
           : t
       )
     )
-  }, [])
+  }, [currentRole])
 
   const addStepNote = useCallback(
     (taskId: string, stepId: string, content: string) => {

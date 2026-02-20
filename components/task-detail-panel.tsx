@@ -34,7 +34,7 @@ export function TaskDetailPanel({
   showNoteInput = false,
   showDeleteButton = false,
 }: TaskDetailPanelProps) {
-  const { updateTaskStatus, addProgressNote, deleteTask, addActionStep, updateActionStepStatus, deleteActionStep, addStepNote } = useTaskContext()
+  const { currentRole, updateTaskStatus, addProgressNote, deleteTask, addActionStep, updateActionStepStatus, deleteActionStep, addStepNote } = useTaskContext()
   const [noteContent, setNoteContent] = useState("")
 
   const isOverdue =
@@ -180,6 +180,7 @@ export function TaskDetailPanel({
             onUpdateStepStatus={handleUpdateActionStepStatus}
             onDeleteStep={handleDeleteActionStep}
             onAddStepNote={handleAddStepNote}
+            userRole={currentRole}
           />
         </div>
       ) : null}

@@ -252,7 +252,7 @@ export function AdminDashboard() {
           <TaskDetailPanel
             task={tasks.find((t) => t.id === selectedTask.id) || selectedTask}
             onClose={() => setSelectedTask(null)}
-            showStatusControl
+            showStatusControl={false}
             showDeleteButton
           />
         </div>

@@ -7,7 +7,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Checkbox } from "@/components/ui/checkbox"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { ChevronDown, Plus, Trash2, Send } from "lucide-react"
-import type { ActionStep } from "@/lib/store"
+import type { ActionStep, UserRole } from "@/lib/store"
 import { formatDistanceToNow } from "date-fns"
 
 interface ActionStepsSectionProps {
@@ -16,6 +16,7 @@ interface ActionStepsSectionProps {
   onUpdateStepStatus: (stepId: string, completed: boolean) => void
   onDeleteStep: (stepId: string) => void
   onAddStepNote: (stepId: string, content: string) => void
+  userRole?: UserRole
 }
 
 export function ActionStepsSection({
@@ -24,6 +25,7 @@ export function ActionStepsSection({
   onUpdateStepStatus,
   onDeleteStep,
   onAddStepNote,
+  userRole = "employee",
 }: ActionStepsSectionProps) {
   const [newStepTitle, setNewStepTitle] = useState("")
   const [expandedSteps, setExpandedSteps] = useState<Set<string>>(new Set())
@@ -139,17 +141,19 @@ export function ActionStepsSection({
                     }`}
                   />
                 </button>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    onDeleteStep(step.id)
-                  }}
-                  className="text-destructive hover:text-destructive hover:bg-destructive/10 h-7 w-7 p-0"
-                >
-                  <Trash2 className="h-3.5 w-3.5" />
-                </Button>
+                {userRole === "admin" && (
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      onDeleteStep(step.id)
+                    }}
+                    className="text-destructive hover:text-destructive hover:bg-destructive/10 h-7 w-7 p-0"
+                  >
+                    <Trash2 className="h-3.5 w-3.5" />
+                  </Button>
+                )}
               </div>
 
               {/* Step details (notes) */}
