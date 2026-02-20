@@ -1,5 +1,6 @@
 "use client"
 
+import Link from "next/link"
 import { useTaskContext } from "@/lib/task-context"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { ScrollArea } from "@/components/ui/scroll-area"
@@ -10,13 +11,11 @@ import { cn } from "@/lib/utils"
 interface EmployeeSidebarProps {
   selectedEmployeeId: string | null
   onSelectEmployee: (employeeId: string | null) => void
-  onDashboardClick?: () => void
 }
 
 export function EmployeeSidebar({
   selectedEmployeeId,
   onSelectEmployee,
-  onDashboardClick,
 }: EmployeeSidebarProps) {
   const { allEmployees, tasks } = useTaskContext()
 
@@ -69,13 +68,14 @@ export function EmployeeSidebar({
         <div className="flex flex-col">
           {/* Dashboard Button */}
           <div className="p-4 border-b border-border">
-            <Button
-              onClick={onDashboardClick}
-              className="w-full bg-primary text-primary-foreground hover:bg-primary/90 gap-2"
-            >
-              <BarChart3 className="h-4 w-4" />
-              Dashboard
-            </Button>
+            <Link href="/team-dashboard" className="w-full">
+              <Button
+                className="w-full bg-primary text-primary-foreground hover:bg-primary/90 gap-2"
+              >
+                <BarChart3 className="h-4 w-4" />
+                Dashboard
+              </Button>
+            </Link>
           </div>
 
           {/* Employees Section - Below Dashboard */}
