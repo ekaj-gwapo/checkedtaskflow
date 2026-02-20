@@ -132,6 +132,7 @@ export function EmployeeDashboard() {
   const [selectedTask, setSelectedTask] = useState<Task | null>(null)
   const [filterStatus, setFilterStatus] = useState<string>("all")
   const [selectedEmployeeId, setSelectedEmployeeId] = useState<string | null>(null)
+  const [showDashboardView, setShowDashboardView] = useState(false)
 
   const myTasks = useMemo(() => {
     return tasks.filter((t) => t.assigneeId === currentUser?.id)
@@ -163,10 +164,30 @@ export function EmployeeDashboard() {
         <EmployeeSidebar
           selectedEmployeeId={selectedEmployeeId}
           onSelectEmployee={setSelectedEmployeeId}
+          onDashboardClick={() => setShowDashboardView(true)}
         />
       </div>
 
       <div className="flex-1 flex flex-col min-w-0">
+        {showDashboardView ? (
+          <div className="p-4 lg:p-6 flex flex-col gap-6 h-full overflow-y-auto">
+            <div className="flex items-center justify-between">
+              <h2 className="text-2xl font-bold text-foreground">Team Performance Dashboard</h2>
+              <button
+                onClick={() => setShowDashboardView(false)}
+                className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+              >
+                ← Back to Tasks
+              </button>
+            </div>
+            <div className="max-w-6xl">
+              <div className="bg-card rounded-lg border border-border p-6">
+                <h3 className="text-lg font-semibold text-foreground mb-6">Top Task Completers</h3>
+                <TopCompletersChart />
+              </div>
+            </div>
+          </div>
+        ) : (
         <div className="p-4 lg:p-6 flex flex-col gap-6">
           {/* Stats */}
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
@@ -230,6 +251,7 @@ export function EmployeeDashboard() {
             </TabsContent>
           </Tabs>
         </div>
+        )}
       </div>
 
       {/* Detail Panel */}

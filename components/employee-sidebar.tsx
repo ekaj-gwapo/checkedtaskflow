@@ -1,6 +1,5 @@
 "use client"
 
-import { useRouter } from "next/navigation"
 import { useTaskContext } from "@/lib/task-context"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { ScrollArea } from "@/components/ui/scroll-area"
@@ -11,13 +10,14 @@ import { cn } from "@/lib/utils"
 interface EmployeeSidebarProps {
   selectedEmployeeId: string | null
   onSelectEmployee: (employeeId: string | null) => void
+  onDashboardClick?: () => void
 }
 
 export function EmployeeSidebar({
   selectedEmployeeId,
   onSelectEmployee,
+  onDashboardClick,
 }: EmployeeSidebarProps) {
-  const router = useRouter()
   const { allEmployees, tasks } = useTaskContext()
 
   const getEmployeeTaskStats = (employeeId: string) => {
@@ -70,7 +70,7 @@ export function EmployeeSidebar({
           {/* Dashboard Button */}
           <div className="p-4 border-b border-border">
             <Button
-              onClick={() => router.push("/dashboard")}
+              onClick={onDashboardClick}
               className="w-full bg-primary text-primary-foreground hover:bg-primary/90 gap-2"
             >
               <BarChart3 className="h-4 w-4" />
