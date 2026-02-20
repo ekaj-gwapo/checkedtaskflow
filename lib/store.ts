@@ -20,6 +20,20 @@ export interface ProgressNote {
   timestamp: string
 }
 
+export interface StepNote {
+  id: string
+  content: string
+  timestamp: string
+  authorName: string
+}
+
+export interface ActionStep {
+  id: string
+  title: string
+  completed: boolean
+  notes: StepNote[]
+}
+
 export interface Task {
   id: string
   title: string
@@ -32,6 +46,7 @@ export interface Task {
   dueDate: string
   completedAt: string | null
   progressNotes: ProgressNote[]
+  actionSteps?: ActionStep[]
 }
 
 export interface WeeklyReport {
@@ -88,6 +103,30 @@ export const initialTasks: Task[] = [
       { id: "note-1", taskId: "task-1", authorId: "emp-1", authorName: "Alex Rivera", content: "Finished initial wireframe layouts for desktop. Moving on to mobile versions.", timestamp: new Date(now.getTime() - 2 * 86400000 + 3600000).toISOString() },
       { id: "note-2", taskId: "task-1", authorId: "emp-1", authorName: "Alex Rivera", content: "Mobile wireframes are done. Cleaning up spacing and alignment.", timestamp: new Date(now.getTime() - 2 * 86400000 + 5400000).toISOString() },
       { id: "note-3", taskId: "task-1", authorId: "emp-1", authorName: "Alex Rivera", content: "All wireframes finalized and exported to Figma.", timestamp: new Date(now.getTime() - 86400000 + 7200000).toISOString() },
+    ],
+    actionSteps: [
+      {
+        id: "step-1-1",
+        title: "Create desktop wireframes",
+        completed: true,
+        notes: [
+          { id: "step-note-1", content: "Completed hero section design", timestamp: new Date(now.getTime() - 2 * 86400000).toISOString(), authorName: "Alex Rivera" },
+        ],
+      },
+      {
+        id: "step-1-2",
+        title: "Create mobile wireframes",
+        completed: true,
+        notes: [
+          { id: "step-note-2", content: "Mobile layout responsive and optimized", timestamp: new Date(now.getTime() - 86400000).toISOString(), authorName: "Alex Rivera" },
+        ],
+      },
+      {
+        id: "step-1-3",
+        title: "Export to Figma",
+        completed: true,
+        notes: [],
+      },
     ],
   },
   {

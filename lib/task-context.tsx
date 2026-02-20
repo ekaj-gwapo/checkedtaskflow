@@ -8,6 +8,7 @@ import {
   type TaskStatus,
   type TaskPriority,
   type ProgressNote,
+  type ActionStep,
   type WeeklyReport,
   adminUser,
   employees,
@@ -24,10 +25,16 @@ interface TaskContextType {
 
   // Tasks
   tasks: Task[]
-  createTask: (task: Omit<Task, "id" | "createdAt" | "completedAt" | "progressNotes">) => void
+  createTask: (task: Omit<Task, "id" | "createdAt" | "completedAt" | "progressNotes" | "actionSteps">) => void
   updateTaskStatus: (taskId: string, status: TaskStatus) => void
   deleteTask: (taskId: string) => void
   addProgressNote: (taskId: string, content: string) => void
+
+  // Action Steps
+  addActionStep: (taskId: string, stepTitle: string) => void
+  updateActionStepStatus: (taskId: string, stepId: string, completed: boolean) => void
+  deleteActionStep: (taskId: string, stepId: string) => void
+  addStepNote: (taskId: string, stepId: string, content: string) => void
 
   // Reports
   reports: WeeklyReport[]
@@ -61,13 +68,14 @@ export function TaskProvider({ children }: { children: ReactNode }) {
   }, [])
 
   const createTask = useCallback(
-    (taskData: Omit<Task, "id" | "createdAt" | "completedAt" | "progressNotes">) => {
+    (taskData: Omit<Task, "id" | "createdAt" | "completedAt" | "progressNotes" | "actionSteps">) => {
       const newTask: Task = {
         ...taskData,
         id: `task-${Date.now()}`,
         createdAt: new Date().toISOString().split("T")[0],
         completedAt: null,
         progressNotes: [],
+        actionSteps: [],
       }
       setTasks((prev) => [newTask, ...prev])
     },
@@ -122,6 +130,90 @@ export function TaskProvider({ children }: { children: ReactNode }) {
     [currentUser]
   )
 
+  const addActionStep = useCallback((taskId: string, stepTitle: string) => {
+    setTasks((prev) =>
+      prev.map((t) =>
+        t.id === taskId
+          ? {
+              ...t,
+              actionSteps: [
+                ...(t.actionSteps || []),
+                {
+                  id: `step-${Date.now()}`,
+                  title: stepTitle,
+                  completed: false,
+                  notes: [],
+                },
+              ],
+            }
+          : t
+      )
+    )
+  }, [])
+
+  const updateActionStepStatus = useCallback(
+    (taskId: string, stepId: string, completed: boolean) => {
+      setTasks((prev) =>
+        prev.map((t) =>
+          t.id === taskId
+            ? {
+                ...t,
+                actionSteps: (t.actionSteps || []).map((step) =>
+                  step.id === stepId ? { ...step, completed } : step
+                ),
+              }
+            : t
+        )
+      )
+    },
+    []
+  )
+
+  const deleteActionStep = useCallback((taskId: string, stepId: string) => {
+    setTasks((prev) =>
+      prev.map((t) =>
+        t.id === taskId
+          ? {
+              ...t,
+              actionSteps: (t.actionSteps || []).filter((step) => step.id !== stepId),
+            }
+          : t
+      )
+    )
+  }, [])
+
+  const addStepNote = useCallback(
+    (taskId: string, stepId: string, content: string) => {
+      if (!currentUser) return
+      setTasks((prev) =>
+        prev.map((t) =>
+          t.id === taskId
+            ? {
+                ...t,
+                actionSteps: (t.actionSteps || []).map((step) =>
+                  step.id === stepId
+                    ? {
+                        ...step,
+                        notes: [
+                          ...step.notes,
+                          {
+                            id: `note-${Date.now()}`,
+                            content,
+                            timestamp: new Date().toISOString(),
+                            authorName: currentUser.name,
+                          },
+                        ],
+                      }
+                    : step
+                ),
+              }
+            : t
+        )
+      )
+    },
+    [currentUser]
+  )
+
   const createReport = useCallback(
     (summary: string) => {
       const now = new Date()
@@ -161,6 +253,10 @@ export function TaskProvider({ children }: { children: ReactNode }) {
         updateTaskStatus,
         deleteTask,
         addProgressNote,
+        addActionStep,
+        updateActionStepStatus,
+        deleteActionStep,
+        addStepNote,
         reports,
         createReport,
         allEmployees: employees,

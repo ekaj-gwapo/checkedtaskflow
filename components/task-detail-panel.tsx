@@ -7,6 +7,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { StatusBadge, PriorityBadge } from "@/components/status-badge"
+import { ActionStepsSection } from "@/components/action-steps-section"
 import {
   Select,
   SelectContent,
@@ -33,7 +34,7 @@ export function TaskDetailPanel({
   showNoteInput = false,
   showDeleteButton = false,
 }: TaskDetailPanelProps) {
-  const { updateTaskStatus, addProgressNote, deleteTask } = useTaskContext()
+  const { updateTaskStatus, addProgressNote, deleteTask, addActionStep, updateActionStepStatus, deleteActionStep, addStepNote } = useTaskContext()
   const [noteContent, setNoteContent] = useState("")
 
   const isOverdue =
@@ -48,6 +49,22 @@ export function TaskDetailPanel({
   const handleDelete = () => {
     deleteTask(task.id)
     onClose()
+  }
+
+  const handleAddActionStep = (stepTitle: string) => {
+    addActionStep(task.id, stepTitle)
+  }
+
+  const handleUpdateActionStepStatus = (stepId: string, completed: boolean) => {
+    updateActionStepStatus(task.id, stepId, completed)
+  }
+
+  const handleDeleteActionStep = (stepId: string) => {
+    deleteActionStep(task.id, stepId)
+  }
+
+  const handleAddStepNote = (stepId: string, content: string) => {
+    addStepNote(task.id, stepId, content)
   }
 
   return (
@@ -153,6 +170,19 @@ export function TaskDetailPanel({
           </Button>
         )}
       </div>
+
+      {/* Action Steps Section */}
+      {task.actionSteps && task.actionSteps.length > 0 || showNoteInput ? (
+        <div className="px-4 py-3 border-b border-border">
+          <ActionStepsSection
+            steps={task.actionSteps || []}
+            onAddStep={handleAddActionStep}
+            onUpdateStepStatus={handleUpdateActionStepStatus}
+            onDeleteStep={handleDeleteActionStep}
+            onAddStepNote={handleAddStepNote}
+          />
+        </div>
+      ) : null}
 
       {/* Progress Notes */}
       <div className="flex-1 flex flex-col min-h-0">

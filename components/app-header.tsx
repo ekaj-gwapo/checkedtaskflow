@@ -20,9 +20,12 @@ export function AppHeader() {
     <header className="sticky top-0 z-40 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="flex h-14 items-center justify-between px-4 lg:px-6">
         <div className="flex items-center gap-3">
+          {/* Logo Placeholder - Replace with your logo */}
           <div className="flex h-8 w-8 items-center justify-center rounded-md bg-primary">
             <LayoutDashboard className="h-4 w-4 text-primary-foreground" />
           </div>
+          {/* Logo insertion point: Replace above div with <img src="/logo.png" alt="Logo" className="h-8 w-8" /> */}
+          
           <span className="font-semibold text-foreground tracking-tight">TaskFlow</span>
           <span className="hidden sm:inline-flex items-center rounded-md bg-secondary px-2 py-0.5 text-xs font-medium text-muted-foreground">
             {currentRole === "admin" ? "Admin" : "Employee"}
