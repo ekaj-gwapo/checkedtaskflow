@@ -1,10 +1,11 @@
 "use client"
 
+import { useRouter } from "next/navigation"
 import { useTaskContext } from "@/lib/task-context"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import { TopCompletersChart } from "@/components/top-completers-chart"
 import { Users, ChevronRight, ImageOff, BarChart3 } from "lucide-react"
+import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 
 interface EmployeeSidebarProps {
@@ -16,6 +17,7 @@ export function EmployeeSidebar({
   selectedEmployeeId,
   onSelectEmployee,
 }: EmployeeSidebarProps) {
+  const router = useRouter()
   const { allEmployees, tasks } = useTaskContext()
 
   const getEmployeeTaskStats = (employeeId: string) => {
@@ -65,13 +67,15 @@ export function EmployeeSidebar({
       {/* Content - Scrollable */}
       <ScrollArea className="flex-1">
         <div className="flex flex-col">
-          {/* Dashboard Section - Always at top */}
+          {/* Dashboard Button */}
           <div className="p-4 border-b border-border">
-            <div className="flex items-center gap-2 mb-3">
-              <BarChart3 className="h-4 w-4 text-primary" />
-              <h3 className="text-sm font-semibold text-foreground">Team Performance</h3>
-            </div>
-            <TopCompletersChart />
+            <Button
+              onClick={() => router.push("/dashboard")}
+              className="w-full bg-primary text-primary-foreground hover:bg-primary/90 gap-2"
+            >
+              <BarChart3 className="h-4 w-4" />
+              Dashboard
+            </Button>
           </div>
 
           {/* Employees Section - Below Dashboard */}
