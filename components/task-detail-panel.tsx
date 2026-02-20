@@ -171,8 +171,8 @@ export function TaskDetailPanel({
         )}
       </div>
 
-      {/* Action Steps Section */}
-      {task.actionSteps && task.actionSteps.length > 0 ? (
+      {/* Action Steps Section - Only visible to employees */}
+      {task.actionSteps && task.actionSteps.length > 0 && currentRole === "employee" ? (
         <div className="px-4 py-3 border-b border-border">
           <ActionStepsSection
             steps={task.actionSteps || []}

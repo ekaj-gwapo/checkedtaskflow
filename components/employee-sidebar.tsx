@@ -3,6 +3,7 @@
 import { useTaskContext } from "@/lib/task-context"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { ScrollArea } from "@/components/ui/scroll-area"
+import { TopCompletersChart } from "@/components/top-completers-chart"
 import { Users, ChevronRight } from "lucide-react"
 import { cn } from "@/lib/utils"
 
@@ -38,7 +39,7 @@ export function EmployeeSidebar({
       <div className="p-4 border-b border-border">
         <div className="flex items-center gap-2">
           <Users className="h-4 w-4 text-primary" />
-          <h2 className="text-sm font-semibold text-foreground">Employees</h2>
+          <h2 className="text-sm font-semibold text-foreground">Team Overview</h2>
         </div>
         <p className="text-xs text-muted-foreground mt-1">
           {allEmployees.length} team members
@@ -46,7 +47,16 @@ export function EmployeeSidebar({
       </div>
 
       <ScrollArea className="flex-1">
-        <div className="p-2 flex flex-col gap-0.5">
+        <div className="flex flex-col gap-4 p-3">
+          {/* Performance Chart */}
+          <div>
+            <TopCompletersChart />
+          </div>
+
+          {/* Employees Section */}
+          <div className="border-t border-border pt-3">
+            <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider px-2 mb-2">Employees</h3>
+            <div className="flex flex-col gap-0.5">
           {/* All Employees option */}
           <button
             onClick={() => onSelectEmployee(null)}
@@ -147,6 +157,8 @@ export function EmployeeSidebar({
               </button>
             )
           })}
+            </div>
+          </div>
         </div>
       </ScrollArea>
     </aside>
