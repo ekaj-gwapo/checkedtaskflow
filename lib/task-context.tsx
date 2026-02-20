@@ -25,7 +25,7 @@ interface TaskContextType {
 
   // Tasks
   tasks: Task[]
-  createTask: (task: Omit<Task, "id" | "createdAt" | "completedAt" | "progressNotes" | "actionSteps">) => void
+  createTask: (task: Omit<Task, "id" | "createdAt" | "completedAt" | "progressNotes">, actionSteps?: string[]) => void
   updateTaskStatus: (taskId: string, status: TaskStatus) => void
   deleteTask: (taskId: string) => void
   addProgressNote: (taskId: string, content: string) => void
@@ -68,14 +68,19 @@ export function TaskProvider({ children }: { children: ReactNode }) {
   }, [])
 
   const createTask = useCallback(
-    (taskData: Omit<Task, "id" | "createdAt" | "completedAt" | "progressNotes" | "actionSteps">) => {
+    (taskData: Omit<Task, "id" | "createdAt" | "completedAt" | "progressNotes">, actionSteps?: string[]) => {
       const newTask: Task = {
         ...taskData,
         id: `task-${Date.now()}`,
         createdAt: new Date().toISOString().split("T")[0],
         completedAt: null,
         progressNotes: [],
-        actionSteps: [],
+        actionSteps: (actionSteps || []).map((title, index) => ({
+          id: `step-${Date.now()}-${index}`,
+          title,
+          completed: false,
+          notes: [],
+        })),
       }
       setTasks((prev) => [newTask, ...prev])
     },
@@ -84,6 +89,12 @@ export function TaskProvider({ children }: { children: ReactNode }) {
 
   const updateTaskStatus = useCallback(
     (taskId: string, status: TaskStatus) => {
+      // Only admin can update task status
+      if (currentRole !== "admin") {
+        console.warn("[v0] Only admin can update task status")
+        return
+      }
+
       setTasks((prev) =>
         prev.map((t) =>
           t.id === taskId
@@ -101,7 +112,7 @@ export function TaskProvider({ children }: { children: ReactNode }) {
         )
       )
     },
-    []
+    [currentRole]
   )
 
   const deleteTask = useCallback((taskId: string) => {

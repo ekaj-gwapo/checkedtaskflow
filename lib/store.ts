@@ -144,6 +144,32 @@ export const initialTasks: Task[] = [
       { id: "note-4", taskId: "task-2", authorId: "emp-2", authorName: "Jordan Chen", content: "Set up base workflow file. Working on test runner config.", timestamp: new Date(now.getTime() - 3600000).toISOString() },
       { id: "note-5", taskId: "task-2", authorId: "emp-2", authorName: "Jordan Chen", content: "Tests running in CI now. Adding deploy step to staging.", timestamp: new Date(now.getTime() - 1800000).toISOString() },
     ],
+    actionSteps: [
+      {
+        id: "step-2-1",
+        title: "Configure GitHub Actions workflow",
+        completed: true,
+        notes: [
+          { id: "step-note-3", content: "Created .github/workflows/ci.yml file", timestamp: new Date(now.getTime() - 7200000).toISOString(), authorName: "Jordan Chen" },
+        ],
+      },
+      {
+        id: "step-2-2",
+        title: "Set up test runner in CI",
+        completed: true,
+        notes: [
+          { id: "step-note-4", content: "Added Jest and test commands to workflow", timestamp: new Date(now.getTime() - 5400000).toISOString(), authorName: "Jordan Chen" },
+        ],
+      },
+      {
+        id: "step-2-3",
+        title: "Add deployment step to staging",
+        completed: false,
+        notes: [
+          { id: "step-note-5", content: "Currently working on staging deployment config", timestamp: new Date(now.getTime() - 1800000).toISOString(), authorName: "Jordan Chen" },
+        ],
+      },
+    ],
   },
   {
     id: "task-3",
@@ -158,6 +184,36 @@ export const initialTasks: Task[] = [
     completedAt: null,
     progressNotes: [
       { id: "note-6", taskId: "task-3", authorId: "emp-3", authorName: "Sam Patel", content: "Documented auth and user endpoints. Moving to task endpoints next.", timestamp: new Date(now.getTime() - 7200000).toISOString() },
+    ],
+    actionSteps: [
+      {
+        id: "step-3-1",
+        title: "Document authentication endpoints",
+        completed: true,
+        notes: [
+          { id: "step-note-6", content: "Added POST /auth/login, POST /auth/register, POST /auth/logout endpoints", timestamp: new Date(now.getTime() - 7200000).toISOString(), authorName: "Sam Patel" },
+        ],
+      },
+      {
+        id: "step-3-2",
+        title: "Document user management endpoints",
+        completed: true,
+        notes: [],
+      },
+      {
+        id: "step-3-3",
+        title: "Document task endpoints",
+        completed: false,
+        notes: [
+          { id: "step-note-7", content: "Currently documenting GET /tasks, POST /tasks, PUT /tasks/:id", timestamp: new Date(now.getTime() - 7200000).toISOString(), authorName: "Sam Patel" },
+        ],
+      },
+      {
+        id: "step-3-4",
+        title: "Generate OpenAPI spec",
+        completed: false,
+        notes: [],
+      },
     ],
   },
   {

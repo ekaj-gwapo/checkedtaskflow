@@ -172,7 +172,7 @@ export function TaskDetailPanel({
       </div>
 
       {/* Action Steps Section */}
-      {task.actionSteps && task.actionSteps.length > 0 || showNoteInput ? (
+      {task.actionSteps && task.actionSteps.length > 0 ? (
         <div className="px-4 py-3 border-b border-border">
           <ActionStepsSection
             steps={task.actionSteps || []}

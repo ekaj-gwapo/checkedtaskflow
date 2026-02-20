@@ -51,7 +51,7 @@ export function CreateTaskDialog() {
     const assignee = allEmployees.find((e) => e.id === assigneeId)
     if (!assignee) return
 
-    const newTask = createTask({
+    createTask({
       title: title.trim(),
       description: description.trim(),
       status: "todo",
@@ -59,7 +59,7 @@ export function CreateTaskDialog() {
       assigneeId,
       assigneeName: assignee.name,
       dueDate,
-    })
+    }, actionSteps)
 
     setTitle("")
     setDescription("")
@@ -166,7 +166,12 @@ export function CreateTaskDialog() {
 
           {/* Action Steps Section */}
           <div className="border-t border-border pt-4 mt-2">
-            <Label className="text-foreground text-sm font-semibold mb-3 block">Action Steps (Optional)</Label>
+            <div className="flex items-start justify-between mb-3">
+              <div>
+                <Label className="text-foreground text-sm font-semibold block">Action Steps (Optional)</Label>
+                <p className="text-xs text-muted-foreground mt-1">Example: "Create and send a letter" → "Create the letter" + "Send the letter"</p>
+              </div>
+            </div>
             <div className="flex gap-2 mb-3">
               <Input
                 value={stepInput}
@@ -193,6 +198,7 @@ export function CreateTaskDialog() {
             
             {actionSteps.length > 0 && (
               <div className="flex flex-col gap-2">
+                <p className="text-xs font-medium text-muted-foreground mb-1">Added steps (employees can add notes as they progress):</p>
                 {actionSteps.map((step, index) => (
                   <div key={index} className="flex items-center justify-between bg-secondary p-2.5 rounded border border-border">
                     <span className="text-sm text-foreground">Step {index + 1}: {step}</span>
